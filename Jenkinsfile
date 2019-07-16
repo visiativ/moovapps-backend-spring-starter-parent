@@ -1,24 +1,9 @@
 pipeline {
-    agent { node { label 'vm-int-jenkins-slave' } }
-    environment {
-      ARTIFACT_VERSION = readMavenPom().getVersion()
-      ARTIFACT_ID    = readMavenPom().getArtifactId()()
-    }
+    agent { label 'vm-int-jenkins-slave' }
     stages {
-        stage('deploy') {
+        stage ('deploy') {
             steps {
                 sh 'mvn -B clean deploy'
-            }
-            when {
-              not { branch 'master' }
-            }
-        }
-        stage('install') {
-            steps {
-                sh 'mvn -B clean install'
-            }
-            when {
-              branch 'master'
             }
         }
     }
