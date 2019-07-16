@@ -7,5 +7,11 @@ pipeline {
               sh 'mvn -B clean deploy'
           }
         }
+        stage ('install') {
+          when { branch 'master' }
+          steps {
+              sh 'mvn -B clean install'
+          }
+        }
     }
 }
