@@ -181,7 +181,7 @@
             <artifactId>jacoco-maven-plugin</artifactId>
             <executions>
               <execution>
-                <id>default-prepare-agent</id>
+                <id>prepare-agent</id>
                 <goals>
                   <goal>prepare-agent</goal>
                 </goals>
@@ -193,38 +193,60 @@
                   <goal>report</goal>
                 </goals>
               </execution>
-<!--              <execution> &lt;!&ndash; fail build if coverage is under 80%&ndash;&gt;-->
-<!--                <id>check</id>-->
-<!--                <goals>-->
-<!--                  <goal>check</goal>-->
-<!--                </goals>-->
-<!--                <phase>verify</phase>-->
-<!--                <configuration>-->
-<!--                  <rules>-->
-<!--                    <rule>-->
-<!--                      <element>CLASS</element>-->
-<!--                      <limits>-->
-<!--                        <limit>-->
-<!--                          <counter>LINE</counter>-->
-<!--                          <value>COVEREDRATIO</value>-->
-<!--                          <minimum>0.80</minimum>-->
-<!--                        </limit>-->
-<!--                        <limit>-->
-<!--                          <counter>BRANCH</counter>-->
-<!--                          <value>COVEREDRATIO</value>-->
-<!--                          <minimum>0.80</minimum>-->
-<!--                        </limit>-->
-<!--                      </limits>-->
-<!--                    </rule>-->
-<!--                  </rules>-->
-<!--                </configuration>-->
-<!--              </execution>-->
+              <execution> <!-- fail build if coverage is under 80%-->
+                <id>check</id>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+                <phase>verify</phase>
+                <configuration>
+                  <rules>
+                    <rule>
+                      <element>CLASS</element>
+                      <limits>
+                        <limit>
+                          <counter>LINE</counter>
+                          <value>COVEREDRATIO</value>
+                          <minimum>0.80</minimum>
+                        </limit>
+                        <limit>
+                          <counter>BRANCH</counter>
+                          <value>COVEREDRATIO</value>
+                          <minimum>0.80</minimum>
+                        </limit>
+                      </limits>
+                    </rule>
+                  </rules>
+                </configuration>
+              </execution>
             </executions>
+          </plugin>
+
+          <plugin> <!-- unit testing should be enabled by default -->
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <argLine>@{argLine}</argLine>
+              <includes>
+                <include>**/*UTest.java</include>
+              </includes>
+            </configuration>
           </plugin>
         </plugins>
       </build>
     </profile>
 
   </profiles>
+
+  <distributionManagement>
+    <repository>
+      <id>java-process-private-release</id>
+      <url>https://repository.devops.moovapps.com/repository/java-process-private-releases/</url>
+    </repository>
+    <snapshotRepository>
+      <id>java-process-private-snapshot</id>
+      <url>https://repository.devops.moovapps.com/repository/java-process-private-snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
 
 </project>
