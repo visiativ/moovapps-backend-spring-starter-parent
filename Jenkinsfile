@@ -1,5 +1,10 @@
 pipeline {
-    agent { label 'vm-int-jenkins-slave' }
+    agent {
+        docker {
+          image 'dregistry.moovapps.com/moovapps/java:11-openjdk-maven'
+          label 'vm-int-jenkins-slave'
+        }
+    }
     stages {
         stage ('deploy') {
           when { not { branch 'master' } }
