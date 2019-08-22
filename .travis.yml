@@ -1,1 +1,26 @@
 language: java
+dist: bionic
+jdk: openjdk11
+
+cache:
+  directories:
+    - "$HOME/.m2"
+
+install:
+  - cp -f .travis/settings.xml $HOME/.m2 # configure maven security
+
+script:
+  - mvn -P prod clean verify -B -Dmaven.javadoc.skip=true -Dmaven.source.skip=true # build and test
+
+deploy:
+  - provider: script
+    skip_cleanup: true
+    script: mvn -P prod deploy -B -DskipTests=true -Dmaven.javadoc.skip=false -Dmaven.source.skip=false
+    on:
+      branch: develop
+  - provider: script
+    skip_cleanup: true
+    script: mvn -P prod deploy -B -DskipTests=true -Dmaven.javadoc.skip=false -Dmaven.source.skip=false
+    on:
+      tags: true
+      branch: master
